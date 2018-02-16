@@ -39,8 +39,7 @@ trait TaskHandlers {
         params.put("actions", request.actions.mkString(","))
       if (request.detailed.getOrElse(false))
         params.put("detailed", "true")
-      if (request.waitForCompletion.getOrElse(false))
-        params.put("wait_for_completion", "true")
+      request.waitForCompletion.map( value => params.put("wait_for_completion", value.toString))
       request.groupBy.foreach(params.put("group_by", _))
 
       ElasticRequest("GET", s"/_tasks", params.toMap)

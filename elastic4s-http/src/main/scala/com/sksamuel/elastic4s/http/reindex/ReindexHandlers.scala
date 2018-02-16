@@ -44,8 +44,7 @@ trait ReindexHandlers {
 
       val params = scala.collection.mutable.Map.empty[String, String]
       request.refresh.map(RefreshPolicyHttpValue.apply).foreach(params.put("refresh", _))
-      if (request.waitForCompletion.getOrElse(false))
-        params.put("wait_for_completion", "true")
+      request.waitForCompletion.map( value => params.put("wait_for_completion", value.toString))
       if (request.waitForActiveShards.getOrElse(-1) > 0)
         params.put("wait_for_active_shards", request.waitForActiveShards.getOrElse(0).toString)
       if (request.requestsPerSecond.getOrElse(-1F) > 0)
